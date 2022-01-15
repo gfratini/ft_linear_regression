@@ -8,8 +8,6 @@ class parser :
 
 	def parse(self):
 		with open(self.__file, newline='') as file :
-			reader = csv.DictReader(file)
-			print("km:\tprice:")
-			# print(reader.restval)
-			for row in reader :
-				print(row["km"], "\t" ,row["price"])
+			reader = csv.reader(file)
+			headers = next(reader)
+			return [dict(zip(headers,i)) for i in reader]
