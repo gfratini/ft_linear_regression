@@ -3,9 +3,11 @@ import os, sys
 sys.path.append(os.getcwd() + "/lib")
 
 from src.parse import parser
+import pandas as pd
 class calculator:
 
 	def __init__(self, stdin: bool = True) -> None:
+		self.data = pd.read_csv("data.csv")
 		self.__parser = parser("thetas.csv")
 		self.__mileage = 0
 		if self.__parser is None:
@@ -20,6 +22,18 @@ class calculator:
 		else:
 			self.__mileage = 0
 		pass
+
+	def normalize(self, km):
+		mins = self.data.min()
+		maxes = self.data.max()
+
+		return (km - mins.km) / (maxes.km - mins.km)
+
+	def denorm(self):
+		mins = self.data.min()
+		maxes = self.data.max()
+
+		self.__result = mins.price + (self.__result * (maxes.price - mins.price))
 
 	def requestValue(self):
 		while True :
@@ -60,7 +74,9 @@ class calculator:
 			self.__mileage = mileage
 		elif mileage < -1:
 			return None
+		self.__mileage = self.normalize(self.__mileage)
 		self.__result = self.__theta0 + self.__theta1 * self.__mileage
+		self.denorm()
 		return self.__result
 
 	def res(self):

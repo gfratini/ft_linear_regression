@@ -1,5 +1,5 @@
 import csv
-
+import pandas as pd
 class parser :
 
 	def __init__(self, file: str) -> None:
@@ -7,6 +7,8 @@ class parser :
 		pass
 
 	def parse(self):
+		dataset = pd.read_csv(self.__file)
+
 		try:
 			with open(self.__file, newline='') as file :
 				reader = csv.reader(file)
