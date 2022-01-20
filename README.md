@@ -16,9 +16,9 @@ in this order
 
 if you want to do by yourself you can
 
-* `make install ` to install dependencies
-* `make trainer ` to train the model
-* `make run ` to run the calculator
+* `make install`  to install dependencies
+* `make trainer`  to train the model
+* `make run`  to run the calculator
 <br/>
 <br/>
 
