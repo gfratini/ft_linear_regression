@@ -1,15 +1,13 @@
-from locale import normalize
-from statistics import mean
-from textwrap import indent
 from .parse import parser
-from .calculator import calculator
 import pandas as pd
 
 class trainerModule:
 	def __init__(self, file: str) -> None:
 		self.data = pd.read_csv(file)
-		self.normalized = []
+		self.theta0 = 0
+		self.theta1 = 0
 		self.clearThetas()
+		self.normalize()
 		pass
 
 	def clearThetas(self):
@@ -37,53 +35,56 @@ class trainerModule:
 			except:
 				print("error, could not create thetas.csv")
 
-	def getThetas(self):
-		parser2 = parser("thetas.csv")
-		thetas = parser2.parse()
-		if thetas == []:
-			self.theta0 = 0.0
-			self.theta1 = 0.0
-		for row in thetas:
-			try:
-				self.theta0 = float(row["theta0"])
-				self.theta1 = float(row["theta1"])
-			except:
-				print("thetas.csv is corrupted")
-				exit()
-
 	def normalize(self):
 		mins = self.data.min()
 		maxes = self.data.max()
+		normalized = []
 
 		for row in self.data.values:
-			self.normalized.append([
+			normalized.append([
 				(row[0] - mins.km) / (maxes.km - mins. km),
 				(row[1] - mins.price) / (maxes.price - mins.price)
 			])
+		self.normalized = pd.DataFrame(normalized, columns=["km", "price"])
+
+	def denorm_one(self, val):
+		mins = self.data.min()
+		maxes = self.data.max()
+		return mins.price + val * (maxes.price - mins.price)
+
+	def denorm(self):
+		mins = self.data.min()
+		maxes = self.data.max()
+		range_x = maxes.km - mins.km
+		range_y = maxes.price - mins.price
+		theta1 = self.theta1 * (range_y / range_x)
+		theta0 = self.theta0 * range_y - ((self.theta1 * mins.km * (range_y)) / range_x) + mins.price
+		return theta0, theta1
+
 
 	def train(self, learningRate: float):
-		self.getThetas()
 		length = self.data.count().km
-		
-		self.normalize()
 
-		for i in range(1000):
+		for i in range(10000):
 			tmpTheta0 = learningRate * (self.sumIndex() / length)
 			tmpTheta1 = learningRate * (self.sumIndexWeighted() / length)
 			self.theta0 -= tmpTheta0
 			self.theta1 -= tmpTheta1
-			self.writeThetas(self.theta0, self.theta1)
+		theta0, theta1 = self.denorm()
+		self.theta0 = theta0
+		self.theta1 = theta1
+		self.writeThetas(theta0, theta1)
 
 	def sumIndex(self):
 		reducer = 0
-		for row in self.normalized:
+		for row in self.normalized.values:
 			res = (self.theta0 + self.theta1 * row[0] - row[1])
 			reducer += res
 		return reducer
 
 	def sumIndexWeighted(self):
 		reducer = 0
-		for row in self.normalized:
+		for row in self.normalized.values:
 			res = (self.theta0 + self.theta1 * row[0] - row[1]) * row[0]
 			reducer += res
 		return reducer

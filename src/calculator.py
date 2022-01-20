@@ -29,12 +29,6 @@ class calculator:
 
 		return (km - mins.km) / (maxes.km - mins.km)
 
-	def denorm(self):
-		mins = self.data.min()
-		maxes = self.data.max()
-
-		self.__result = mins.price + (self.__result * (maxes.price - mins.price))
-
 	def requestValue(self):
 		while True :
 			try:
@@ -65,18 +59,13 @@ class calculator:
 	def theta(self):
 		return [self.__theta0, self.__theta1]
 
-	def info(self):
-		print("theta0\ttheta1\tmileage\n" + str(self.__theta0) + "\t" + str(self.__theta1) + "\t" + str(self.__mileage), "\n")
-
 	def calculate(self, mileage=-1):
 		self.getThetas()
 		if mileage != -1:
 			self.__mileage = mileage
 		elif mileage < -1:
 			return None
-		self.__mileage = self.normalize(self.__mileage)
 		self.__result = self.__theta0 + self.__theta1 * self.__mileage
-		self.denorm()
 		return self.__result
 
 	def res(self):
