@@ -2,71 +2,39 @@
 import os, sys
 sys.path.append(os.getcwd() + "/lib")
 
-from src.parse import parser
-import pandas as pd
 class calculator:
 
-	def __init__(self, stdin: bool = True) -> None:
-		self.data = pd.read_csv("data.csv")
-		self.__parser = parser("thetas.csv")
-		self.__mileage = 0
-		if self.__parser is None:
-			self.__theta0 = 0
-			self.__theta1 = 0
-		else:
-			self.getThetas()
-			if self.error == True:
-				return
-		if self.error == False and stdin == True:
-			self.__mileage = self.requestValue()
-		else:
-			self.__mileage = 0
+	def __init__(self) -> None:
+		self.__get_thetas()
+		self.__request_value()
 		pass
 
-	def normalize(self, km):
-		mins = self.data.min()
-		maxes = self.data.max()
-
-		return (km - mins.km) / (maxes.km - mins.km)
-
-	def requestValue(self):
+	def __request_value(self):
 		while True :
 			try:
-				mileage = int(input("enter mileage: "))
-				if (mileage < 0):
+				input_value = int(input("enter input_value: "))
+				if (input_value < 0):
 					print("enter a POSITIVE number")
-					continue
-				return mileage
+				else:
+					self.__input_value = input_value
+					return
+			except EOFError:
+				exit()
 			except:
 				print("enter a number, idiot...")
 				continue
 
-	def getThetas(self):
-		thetas = self.__parser.parse()
-		if thetas == []:
-			self.__theta0 = 0.0
-			self.__theta1 = 0.0
-		for row in thetas:
+	def __get_thetas(self):
+		with open("thetas.csv", "r") as file:
+			headers = file.readline().strip("\n").split(",")
+			thetas = file.readline().strip("\n").split(",")
 			try:
-				self.__theta0 = float(row["theta0"])
-				self.__theta1 = float(row["theta1"])
+				self.__theta0 = float(thetas[0])
+				self.__theta1 = float(thetas[1])
 			except:
-				print("thetas.csv is corrupted")
-				self.error = True
-				return
-		self.error = False
+				self.__theta0 = float(thetas[0])
+				self.__theta1 = float(thetas[1])
 
-	def theta(self):
-		return [self.__theta0, self.__theta1]
-
-	def calculate(self, mileage=-1):
-		self.getThetas()
-		if mileage != -1:
-			self.__mileage = mileage
-		elif mileage < -1:
-			return None
-		self.__result = self.__theta0 + self.__theta1 * self.__mileage
-		return self.__result
-
-	def res(self):
-		print("price for", self.__mileage, "kilometers:", self.__result)
+	def run(self):
+		self.__result = self.__theta0 + self.__theta1 * self.__input_value
+		return self.__input_value, self.__result

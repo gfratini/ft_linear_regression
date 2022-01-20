@@ -1,20 +1,14 @@
 # add "lib" to module path
-from asyncore import read
 import os, sys
 sys.path.append(os.getcwd() + "/lib")
 
 import matplotlib.pyplot as plt
 import pandas as pd
-from src.training_model import trainerModule
+import numpy as np
+from src.model import linear_model
 
-trainer2 = trainerModule("data.csv")
-trainer2.train(0.01)
-def calculate(val):
-	return trainer2.theta0 + trainer2.theta1 * val
-y_0 = calculate(trainer2.data.min().km)
-y_1 = calculate(trainer2.data.max().km)
+trainer = linear_model("data.csv")
+trainer.train(0.01)
 
-plt.plot([trainer2.data.min().km, trainer2.data.max().km], [y_0, y_1])
-plt.plot(trainer2.data.km, trainer2.data.price, "ro")
-
-plt.show()
+trainer.save_plot()
+# trainer.plot_live()

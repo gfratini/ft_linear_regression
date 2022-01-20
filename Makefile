@@ -8,13 +8,15 @@ REQ = "requirements.txt"
 init: install
 	@${PY3} ${MAIN}
 
+if:
+	@[ -f "thetas.csv" ] || ${PY3} ${TRAINER} fi
 trainer:
 	@${PY3} ${TRAINER}
 
 calculator:
 	@${PY3} ${CALCULATOR}
 
-run: 
+run: if
 	@${PY3} ${MAIN}
 
 install:
