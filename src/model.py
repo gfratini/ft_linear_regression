@@ -55,10 +55,10 @@ class linear_model:
 		self.theta0 = theta0
 		self.theta1 = theta1
 
-	def train(self, learning_rate: float):
+	def train(self, learning_rate: float, depth: int):
 		length = self.data.count().values[0]
 
-		for i in range(10000):
+		for i in range(depth):
 			tmpTheta0 = learning_rate * (self.__total_error() / length)
 			tmpTheta1 = learning_rate * (self.__total_error_weight() / length)
 			self.theta0 -= tmpTheta0

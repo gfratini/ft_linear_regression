@@ -12,7 +12,7 @@ class calculator:
 	def __request_value(self):
 		while True :
 			try:
-				input_value = int(input("enter input_value: "))
+				input_value = int(input("enter a value: "))
 				if (input_value < 0):
 					print("enter a POSITIVE number")
 				else:
@@ -21,7 +21,7 @@ class calculator:
 			except EOFError:
 				exit()
 			except:
-				print("enter a number, idiot...")
+				print("enter a number")
 				continue
 
 	def __get_thetas(self):
@@ -32,8 +32,8 @@ class calculator:
 				self.__theta0 = float(thetas[0])
 				self.__theta1 = float(thetas[1])
 			except:
-				self.__theta0 = float(thetas[0])
-				self.__theta1 = float(thetas[1])
+				self.__theta0 = 0
+				self.__theta1 = 0
 
 	def run(self):
 		self.__result = self.__theta0 + self.__theta1 * self.__input_value
