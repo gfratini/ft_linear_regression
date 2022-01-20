@@ -65,7 +65,6 @@ class linear_model:
 			self.theta1 -= tmpTheta1
 		self.__denorm()
 		self.__write_thetas()
-		self.__plot()
 
 	def __total_error(self):
 		reducer = 0
@@ -86,6 +85,8 @@ class linear_model:
 		y = self.theta0 + self.theta1 * x
 
 		plt.plot(x, y)
+		plt.xlabel(self.data.columns[0])
+		plt.ylabel(self.data.columns[1])
 		plt.plot(self.data[self.data.columns[0]], self.data[self.data.columns[1]], "ro")
 
 	def save_plot(self):

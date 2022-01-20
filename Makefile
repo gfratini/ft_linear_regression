@@ -5,8 +5,7 @@ ERROR = error.py
 REQ = "requirements.txt"
 
 
-init: install
-	@${PY3} ${MAIN}
+init: install run
 
 if:
 	@[ -f "thetas.csv" ] || ${PY3} ${TRAINER} fi
