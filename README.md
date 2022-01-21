@@ -20,7 +20,6 @@ if you want to do by yourself you can
 * `make trainer`  to train the model
 * `make run`  to run the calculator
 <br/>
-<br/>
 
 ### Don't have Makefile?
 <br/>
