@@ -13,11 +13,8 @@ class calculator:
 		while True :
 			try:
 				input_value = int(input("enter a value: "))
-				if (input_value < 0):
-					print("enter a POSITIVE number")
-				else:
-					self.__input_value = input_value
-					return
+				self.__input_value = input_value
+				return
 			except EOFError:
 				exit()
 			except:

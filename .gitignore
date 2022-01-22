@@ -210,5 +210,6 @@ cython_debug/
 
 ####
 
-regression_result.png
+training_result.png
+error.png
 thetas.csv

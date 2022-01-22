@@ -8,6 +8,6 @@ import numpy as np
 from src.model import linear_model
 
 trainer = linear_model("data.csv")
-trainer.train(0.001, 100000)
+trainer.train(0.001, 1000000)
 trainer.save_plot()
 # trainer.plot_live()
