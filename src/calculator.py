@@ -24,10 +24,12 @@ class calculator:
 	def __get_thetas(self):
 		try:
 			with open("thetas.csv", "r") as file:
-					thetas = file.readline().strip("\n").split(",")
-					self.__theta0 = float(thetas[0])
-					self.__theta1 = float(thetas[1])
+				file.readline()
+				thetas = file.readline().strip("\n").split(",")
+				self.__theta0 = float(thetas[0])
+				self.__theta1 = float(thetas[1])
 		except:
+			print("Training data not found or corrupted")
 			self.__theta0 = 0
 			self.__theta1 = 0
 
