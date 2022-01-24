@@ -22,15 +22,14 @@ class calculator:
 				continue
 
 	def __get_thetas(self):
-		with open("thetas.csv", "r") as file:
-			headers = file.readline().strip("\n").split(",")
-			thetas = file.readline().strip("\n").split(",")
-			try:
-				self.__theta0 = float(thetas[0])
-				self.__theta1 = float(thetas[1])
-			except:
-				self.__theta0 = 0
-				self.__theta1 = 0
+		try:
+			with open("thetas.csv", "r") as file:
+					thetas = file.readline().strip("\n").split(",")
+					self.__theta0 = float(thetas[0])
+					self.__theta1 = float(thetas[1])
+		except:
+			self.__theta0 = 0
+			self.__theta1 = 0
 
 	def run(self):
 		self.__result = self.__theta0 + self.__theta1 * self.__input_value
